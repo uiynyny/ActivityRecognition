@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">GoogleService</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="activity_unknown">unknown</string>
+    <string name="activity_in_vehicle">in vehicle</string>
+    <string name="activity_on_bicycle">on bicycle</string>
+    <string name="activity_on_foot">on foot</string>
+    <string name="activity_running">running</string>
+    <string name="activity_still">still</string>
+    <string name="activity_tilting">tilting</string>
+    <string name="activity_walking">walk</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="greeting">Greeting</string>
+</resources>
