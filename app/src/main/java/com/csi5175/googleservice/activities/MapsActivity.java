@@ -122,7 +122,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        followMeLocationSource.getBestProvider();
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, mIntentFilter);
     }
 
@@ -177,17 +176,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         requestLocationPermission();
         updateLocationUI();
         getDeviceLocation();
+        setCameraFollow();
+    }
+
+    private void setCameraFollow() {
+        followMeLocationSource.getBestProvider();
         mMap.setLocationSource(followMeLocationSource);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM));
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
-                mMap.animateCamera(
-                        CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(mLastKnownLocation.getLatitude(),
-                                        mLastKnownLocation.getLongitude()),
-                                DEFAULT_ZOOM));
-                return true;
+                if (mLastKnownLocation != null) {
+                    mMap.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(mLastKnownLocation.getLatitude(),
+                                            mLastKnownLocation.getLongitude()),
+                                    DEFAULT_ZOOM));
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -243,7 +250,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                requestLocationPermission();
             }
         } catch (SecurityException se) {
             Log.e("EXCEPTION", se.getMessage());
@@ -252,7 +258,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mLocationPermissionGranted = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
@@ -261,6 +267,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
         }
         updateLocationUI();
+        getDeviceLocation();
+        setCameraFollow();
     }
 
     private class ActivityReceiver extends BroadcastReceiver {
@@ -444,23 +452,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         public void getBestProvider() {
-            bestProvider = locationManager.getBestProvider(criteria,true);
+            bestProvider = locationManager.getBestProvider(criteria, true);
         }
 
         @Override
         public void activate(OnLocationChangedListener onLocationChangedListener) {
             this.onLocationChangedListener = onLocationChangedListener;
-            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+            if (mLocationPermissionGranted && bestProvider != null) {
+                locationManager.requestLocationUpdates(bestProvider, 1000 * 10, 10, this);
             }
-            locationManager.requestLocationUpdates(bestProvider, 1000 * 10, 10, this);
         }
 
         @Override
