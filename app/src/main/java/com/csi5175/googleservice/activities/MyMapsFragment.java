@@ -1,3 +1,8 @@
+/*
+ * Yan Zhang
+ * 300052103
+ * responsible for populating map view and track user when moving.
+ * */
 package com.csi5175.googleservice.activities;
 
 import android.Manifest;
@@ -33,6 +38,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+/*
+ * This is alternated from the map activity templates
+ * Implement the location manager based on the help from
+ * https://stackoverflow.com/questions/40142331/how-to-request-location-permission-at-runtime
+ * */
 public class MyMapsFragment extends Fragment implements OnMapReadyCallback {
     //DEBUG only
     private String TAG = MyMapsFragment.class.getSimpleName();
@@ -45,7 +55,6 @@ public class MyMapsFragment extends Fragment implements OnMapReadyCallback {
     private final int DEFAULT_ZOOM = 15;
     private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
     private FollowMeLocationSource followMeLocationSource;
-
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
@@ -104,7 +113,6 @@ public class MyMapsFragment extends Fragment implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
         // Sydney and move the camera if permission denied
         requestLocationPermission();
@@ -208,7 +216,10 @@ public class MyMapsFragment extends Fragment implements OnMapReadyCallback {
         setCameraFollow();
     }
 
-    //for camera auto follow the user on location change
+    /*for camera auto follow the user on location change
+     * I find some helpful staff on stack overflow
+     * https://stackoverflow.com/questions/13739990/map-view-following-user-mylocationoverlay-type-functionality-for-android-maps
+     * */
     private class FollowMeLocationSource implements LocationListener, LocationSource {
 
         private final Criteria criteria;

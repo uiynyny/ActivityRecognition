@@ -1,3 +1,8 @@
+/*
+ * Yan Zhang
+ * 300052103
+ * entrance of the app, inflate the main view of the app.
+ * */
 package com.csi5175.googleservice.activities;
 
 import android.content.BroadcastReceiver;
@@ -32,6 +37,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/*
+ * Main structure of the app comes from the following tutorial
+ * https://www.androidhive.info/2017/12/android-user-activity-recognition-still-walking-running-driving-etc/
+ * */
 public class MainActivity extends AppCompatActivity {
     //DEBUG only
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -106,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     //super result handle
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG,"Main result back");
+        Log.d(TAG, "Main result back");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -243,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
             return "NULL";
         }
 
+        //handle the user transition when enter or exit certain states
         private void handleUserTransition(int type, int transition) {
             String label = toTransitionType(type);
             String trans = toActivityString(transition);

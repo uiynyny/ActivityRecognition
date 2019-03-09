@@ -1,3 +1,8 @@
+/*
+ * Yan Zhang
+ * 300052103
+ * splash screen activity for present current date variable to user.
+ * */
 package com.csi5175.googleservice.activities;
 
 import android.content.Intent;
@@ -14,8 +19,10 @@ import java.util.Date;
 import java.util.Locale;
 
 /*
-* This activity is used for splash screen with greetings. only appear when app started
-* */
+ * This activity is used for splash screen with greetings. only appear when app started
+ * can find tutorial here
+ * https://android.jlelse.eu/the-complete-android-splash-screen-guide-c7db82bce565
+ * */
 public class SplashActivity extends AppCompatActivity {
     //DEBUG only
     private static final String TAG = SplashActivity.class.getSimpleName();
@@ -24,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //This is the way of doing static splash screen
         setTheme(R.style.AppTheme_NoActionBar);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         TextView textView = findViewById(R.id.textTime);
@@ -32,13 +40,14 @@ public class SplashActivity extends AppCompatActivity {
         String formattedDate = df.format(c);
         textView.setText(formattedDate);
 
+        //set splash activity by timer.
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 SplashActivity.this.startActivity(intent);
                 SplashActivity.this.finish();
             }
-        },1000);
+        }, 1000);
     }
 }
