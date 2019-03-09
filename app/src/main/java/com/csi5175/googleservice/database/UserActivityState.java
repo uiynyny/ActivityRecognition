@@ -1,10 +1,13 @@
+/*
+ * Yan Zhang
+ * 300052103
+ * POJO for data base entity, used for ORM with Room
+ * */
 package com.csi5175.googleservice.database;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-
-import java.util.Date;
 
 @Entity(tableName = "UserActivityState")
 public class UserActivityState {

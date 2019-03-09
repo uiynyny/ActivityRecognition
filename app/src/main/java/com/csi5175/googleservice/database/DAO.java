@@ -1,3 +1,8 @@
+/*
+ * Yan Zhang
+ * 300052103
+ * The DAO interface for interacting with database
+ * */
 package com.csi5175.googleservice.database;
 
 import android.arch.persistence.room.Dao;

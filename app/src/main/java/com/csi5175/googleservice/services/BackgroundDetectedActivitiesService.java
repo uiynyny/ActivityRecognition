@@ -1,3 +1,9 @@
+/*
+ * Yan Zhang
+ * 300052103
+ * The pre layer background service for activity recognition which handles registration of services
+ * for activity recognition and transition
+ * */
 package com.csi5175.googleservice.services;
 
 import android.app.PendingIntent;
@@ -22,13 +28,25 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * The skeleton comes from the tutorial in the main activity
+ *
+ * */
 public class BackgroundDetectedActivitiesService extends Service {
 
+    //DEBUG only
     private static final String TAG = BackgroundDetectedActivitiesService.class.getSimpleName();
+    //private fields for activity recognition
     private PendingIntent pendingIntent;
     private ActivityRecognitionClient activityRecognitionClient;
+    private IBinder mBinder = new BackgroundDetectedActivitiesService.LocalBinder();
 
-    IBinder mBinder = new BackgroundDetectedActivitiesService.LocalBinder();
+    //binder for services
+    private class LocalBinder extends Binder {
+        public BackgroundDetectedActivitiesService getServerInstance() {
+            return BackgroundDetectedActivitiesService.this;
+        }
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -41,15 +59,12 @@ public class BackgroundDetectedActivitiesService extends Service {
         return START_STICKY;
     }
 
-    private class LocalBinder extends Binder {
-        public BackgroundDetectedActivitiesService getServerInstance() {
-            return BackgroundDetectedActivitiesService.this;
-        }
-    }
-
     public BackgroundDetectedActivitiesService() {
     }
 
+    /*
+     * Initiate the recognition client and pending intent services
+     * */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -61,13 +76,21 @@ public class BackgroundDetectedActivitiesService extends Service {
         setupActivityTransition();
     }
 
+
+    /*
+     * remove the all services related
+     * */
     @Override
     public void onDestroy() {
         super.onDestroy();
         removeActivityUpdatesButtonHandler();
         unregisterActivityTransition();
+        pendingIntent.cancel();
     }
 
+    /*
+     * Register the pending intent for update
+     * */
     private void requestActivityUpdatesButtonHandler() {
         Task<Void> task = activityRecognitionClient.requestActivityUpdates(Constants.DETECTION_INTERVAL_IN_MILLISECONDS, pendingIntent);
         task.addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -84,6 +107,9 @@ public class BackgroundDetectedActivitiesService extends Service {
         });
     }
 
+    /*
+     * Unregister the recognition from pending intent
+     * */
     private void removeActivityUpdatesButtonHandler() {
         Task<Void> task = activityRecognitionClient.removeActivityUpdates(pendingIntent);
         task.addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -100,6 +126,9 @@ public class BackgroundDetectedActivitiesService extends Service {
         });
     }
 
+    /*
+     * Register the transition state in pending intent and get update
+     * */
     private void setupActivityTransition() {
         List<ActivityTransition> transitions = new ArrayList<>();
         transitions.add(new ActivityTransition.Builder().setActivityType(DetectedActivity.WALKING).setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER).build());
@@ -127,6 +156,9 @@ public class BackgroundDetectedActivitiesService extends Service {
         });
     }
 
+    /*
+     * Unregister the transition from pending intent
+     * */
     private void unregisterActivityTransition() {
         ActivityRecognition.getClient(this).removeActivityTransitionUpdates(pendingIntent)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
