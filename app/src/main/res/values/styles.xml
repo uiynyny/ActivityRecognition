@@ -14,6 +14,8 @@
     </style>
 
     <style name="AppTheme.Launcher">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/launch_screen</item>
         <item name="colorPrimaryDark">@android:color/background_dark</item>
     </style>

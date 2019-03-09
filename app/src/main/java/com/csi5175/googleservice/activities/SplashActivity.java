@@ -17,23 +17,20 @@ import java.util.Locale;
 * This activity is used for splash screen with greetings. only appear when app started
 * */
 public class SplashActivity extends AppCompatActivity {
-
+    //DEBUG only
     private static final String TAG = SplashActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //This is the way of doing static splash screen
-        setTheme(R.style.AppTheme);
+        setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        TextView textView = findViewById(R.id.textView);
-        TextView textView1 = findViewById(R.id.textTime);
+        TextView textView = findViewById(R.id.textTime);
         Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US);
         String formattedDate = df.format(c);
-        textView1.setText(formattedDate);
+        textView.setText(formattedDate);
 
         new Handler().postDelayed(new Runnable() {
             @Override
