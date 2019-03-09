@@ -4,32 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SplashActivity"
-    android:background="@drawable/night_sky">
+    tools:context=".activities.MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/btn_start_tracking"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/map_holder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/main_image"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:src="@drawable/ic_unknown"
+            android:tint="#606060" />
+
+        <TextView
+            android:id="@+id/main_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/activity_hint" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_start_tracking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/greeting"
-        android:textColor="@android:color/white"
-        android:textSize="36sp"
-        android:textStyle="bold"
+        android:layout_margin="16dp"
+        android:text="@string/start_tracking"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.27" />
-    <TextView
-        android:id="@+id/textTime"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_stop_tracking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/title_activity_splash"
-        android:textColor="@android:color/white"
-        android:textSize="36sp"
-        android:textStyle="bold"
+        android:layout_margin="16dp"
+        android:text="@string/stop_tracking"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
